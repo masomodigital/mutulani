@@ -1,72 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kasheshe Audio Player</title>
-    <style>
-        body {
-            text-align: center;
-            font-family: Arial, sans-serif;
-        }
-        #audioPlayer {
-            margin-top: 20px;
-            width: 100%;
-            max-width: 400px;
-        }
-        .controls {
-            margin-top: 10px;
-        }
-        button {
-            padding: 10px;
-            margin: 5px;
-            cursor: pointer;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kasheshe Audio Player</title>
+  <style>
+    body {
+      text-align: center;
+      font-family: Arial, sans-serif;
+    }
+    #audioPlayer {
+      margin-top: 20px;
+      width: 100%;
+      max-width: 400px;
+    }
+    .controls {
+      margin-top: 10px;
+    }
+    button {
+      padding: 10px;
+      margin: 5px;
+      cursor: pointer;
+    }
+    #trackInfo {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-      <audio id="audioPlayer" controls>
-        <source id="audioSource" src="https://archive.org/download/mutulani-5-nakoma-ilovi/Mutulani%205%20nakoma%20ilovi.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
-    <div class="controls">
-        <button onclick="prevTrack()">⏮️ Previous</button>
-        <button onclick="playPause()">▶️ Play/Pause</button>
-        <button onclick="nextTrack()">⏭️ Next</button>
-    </div>
+  <audio id="audioPlayer" controls>
+    <source id="audioSource" src="https://archive.org/download/mutulani-5-nakoma-ilovi/Mutulani%205%20nakoma%20ilovi.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
 
-    <script>
-        const tracks = [
-            "https://archive.org/download/mutulani-5-nakoma-ilovi/Mutulani%205%20nakoma%20ilovi.mp3",
-            "https://archive.org/download/mutulani-5-nakoma-ilovi/Mutulani%205%20nikiliviti.mp3",
-            "https://archive.org/download/mutulani-5-nakoma-ilovi/Mutulani%205%20ninyie%20nakwathie.mp3",
-            "https://archive.org/download/mutulani-5-nakoma-ilovi/mutulani%20%204%20maitangilika.mp3"
-        ];
-        let currentTrack = 0;
-        const audioPlayer = document.getElementById("audioPlayer");
-        const audioSource = document.getElementById("audioSource");
+  <div id="trackInfo">Playing 1 of 4 tracks</div>
 
-        function playPause() {
-            if (audioPlayer.paused) {
-                audioPlayer.play();
-            } else {
-                audioPlayer.pause();
-            }
-        }
+  <div class="controls">
+    <button onclick="prevTrack()">⏮️ Previous</button>
+    <button onclick="playPause()">▶️ Play/Pause</button>
+    <button onclick="nextTrack()">⏭️ Next</button>
+  </div>
 
-        function nextTrack() {
-            currentTrack = (currentTrack + 1) % tracks.length;
-            audioSource.src = tracks[currentTrack];
-            audioPlayer.load();
-            audioPlayer.play();
-        }
+  <script>
+    const tracks = [
+      "https://archive.org/download/mutulani-5-nakoma-ilovi/Mutulani%205%20nakoma%20ilovi.mp3",
+      "https://archive.org/download/mutulani-5-nakoma-ilovi/Mutulani%205%20nikiliviti.mp3",
+      "https://archive.org/download/mutulani-5-nakoma-ilovi/Mutulani%205%20ninyie%20nakwathie.mp3",
+      "https://archive.org/download/mutulani-5-nakoma-ilovi/mutulani%20%204%20maitangilika.mp3"
+    ];
 
-        function prevTrack() {
-            currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
-            audioSource.src = tracks[currentTrack];
-            audioPlayer.load();
-            audioPlayer.play();
-        }
-    </script>
+    let currentTrack = 0;
+    const audioPlayer = document.getElementById("audioPlayer");
+    const audioSource = document.getElementById("audioSource");
+    const trackInfo = document.getElementById("trackInfo");
+
+    function updateTrackInfo() {
+      trackInfo.textContent = `Playing ${currentTrack + 1} of ${tracks.length} tracks`;
+    }
+
+    function playPause() {
+      if (audioPlayer.paused) {
+        audioPlayer.play();
+      } else {
+        audioPlayer.pause();
+      }
+    }
+
+    function nextTrack() {
+      currentTrack = (currentTrack + 1) % tracks.length;
+      audioSource.src = tracks[currentTrack];
+      audioPlayer.load();
+      audioPlayer.play();
+      updateTrackInfo();
+    }
+
+    function prevTrack() {
+      currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
+      audioSource.src = tracks[currentTrack];
+      audioPlayer.load();
+      audioPlayer.play();
+      updateTrackInfo();
+    }
+
+    // Show initial track info on load
+    updateTrackInfo();
+  </script>
 </body>
 </html>
